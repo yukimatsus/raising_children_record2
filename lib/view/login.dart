@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:raisingchildrenrecord2/view/home.dart';
 import 'package:raisingchildrenrecord2/viewmodel/login_viewmodel.dart';
@@ -22,9 +23,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  void _onLoginButtonTaped() {
   }
 }
 
@@ -52,7 +50,7 @@ class _LoginButtonState extends State<LoginButton> {
   void initState() {
     super.initState();
 
-    _viewModel = Provider.of<LoginViewModel>(context);
+    _viewModel = Provider.of<LoginViewModel>(context, listen: false);
 
     // この辺はLoginButtonではなく、LoginPageの方でやりたい。
     _viewModel.onLoginPageAppear.add(null);
@@ -67,8 +65,14 @@ class _LoginButtonState extends State<LoginButton> {
       );
     });
     _viewModel.errorMessage.listen((String errorMessage) {
-      // TODO: showToast
+      Fluttertoast.showToast(msg: errorMessage);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.dispose();
   }
 
   void _onLoginButtonTapped() {

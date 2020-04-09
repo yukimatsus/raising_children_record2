@@ -19,4 +19,11 @@ class LoginViewModel {
 
   void _bindInputAndOutput() {
   }
+
+  void dispose() {
+    _onLoginPageAppearStreamController.close();
+    _onSignInButtonTappedStreamController.close();
+    _isSignInStreamController.close();
+    _errorMessageStreamController.close();
+  }
 }
