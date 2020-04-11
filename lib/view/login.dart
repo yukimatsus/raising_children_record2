@@ -54,7 +54,11 @@ class _LoginButtonState extends State<LoginButton> {
 
     // この辺はLoginButtonではなく、LoginPageの方でやりたい。
     _viewModel.onLoginPageAppear.add(null);
-    _viewModel.isSignIn.listen((bool signIn) {
+    _viewModel.signInUser.listen((String signInUser) {
+      if (signInUser == null || signInUser.isNotEmpty) {
+        return;
+      }
+
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -76,6 +80,7 @@ class _LoginButtonState extends State<LoginButton> {
   }
 
   void _onLoginButtonTapped() {
+    print("### _onLoginButtonTapped()");
     _viewModel.onSignInButtonTapped.add(null);
   }
 }
