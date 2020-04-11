@@ -12,8 +12,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Provider<LoginViewModel>.value(
-      value: LoginViewModel(),
+    return Provider<LoginViewModel>(
+      create: (_) => LoginViewModel(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('Login')
@@ -76,6 +76,7 @@ class _LoginButtonState extends State<LoginButton> {
   @override
   void dispose() {
     super.dispose();
+    print("### dispose()");
     _viewModel.dispose();
   }
 

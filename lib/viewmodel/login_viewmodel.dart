@@ -27,8 +27,8 @@ class LoginViewModel {
   }
 
   void _bindInputAndOutput() {
-    _onLoginPageAppearStreamController.stream.listen((_) => _getUserIdIfSignIn);
-    _onSignInButtonTappedStreamController.stream.listen((_) => _signIn);
+    _onLoginPageAppearStreamController.stream.listen((_) => _getUserIdIfSignIn());
+    _onSignInButtonTappedStreamController.stream.listen((_) => _signIn());
   }
 
   void _getUserIdIfSignIn() async {
@@ -36,10 +36,10 @@ class LoginViewModel {
     bool isSignIn = await googleSignIn.isSignedIn();
     if (isSignIn) {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      _signInUserStreamController.add(sharedPreferences.getString("userId"));
+      _signInUserStreamController.sink.add(sharedPreferences.getString("userId"));
 
     } else {
-      _signInUserStreamController.add(null);
+      _signInUserStreamController.sink.add(null);
     }
   }
 
@@ -67,7 +67,7 @@ class LoginViewModel {
         await sharedPreferences.setString('name', user.displayName);
         await sharedPreferences.setString('photoUrl', user.photoUrl);
 
-        _signInUserStreamController.add(user.uid);
+        _signInUserStreamController.sink.add(user.uid);
 
       } else {
         final snapshot = snapshots[0];
@@ -76,12 +76,12 @@ class LoginViewModel {
         await sharedPreferences.setString('name', snapshot['name']);
         await sharedPreferences.setString('photoUrl', snapshot['photoUrl']);
 
-        _signInUserStreamController.add(snapshot['id']);
+        _signInUserStreamController.sink.add(snapshot['id']);
       }
 
     } else {
-      _signInUserStreamController.add(null);
-      _errorMessageStreamController.add("Failed to sign in.");
+      _signInUserStreamController.sink.add(null);
+      _errorMessageStreamController.sink.add("Failed to sign in.");
     }
   }
 
